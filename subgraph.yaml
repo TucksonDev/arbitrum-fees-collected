@@ -1,6 +1,8 @@
 specVersion: 0.0.5
 schema:
   file: ./schema.graphql
+features:
+  - grafting
 dataSources:
   - kind: ethereum/contract
     name: Fees
@@ -8,7 +10,7 @@ dataSources:
     source:
       address: "0x0000000000000000000000000000000000000001"
       abi: BalanceChecker
-      startBlock: 70483417
+      startBlock: 217538
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -22,12 +24,12 @@ dataSources:
         - handler: handleBlock
       file: ./src/balance-checker.ts
   - kind: ethereum/contract
-    name: RewardDistributor
+    name: SafeFeesReceiver
     network: arbitrum-one
     source:
-      address: "0xE6ec2174539a849f9f3ec973C66b333eD08C0c18"
-      abi: FeesReceiver
-      startBlock: 70483417
+      address: "0x98e4db7e07e584f89a2f6043e7b7c89dc27769ed"
+      abi: SafeFeesReceiver
+      startBlock: 217538
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,21 +37,41 @@ dataSources:
       entities:
         - Fees
       abis:
-        - name: FeesReceiver
-          file: ./abis/FeesReceiver.json
+        - name: SafeFeesReceiver
+          file: ./abis/SafeFeesReceiver.json
+      eventHandlers:
+        - event: SafeReceived(indexed address,uint256)
+          handler: handleSafeReceived
+      file: ./src/safe-fees-receiver.ts
+  - kind: ethereum/contract
+    name: RewardDistributor
+    network: arbitrum-one
+    source:
+      address: "0xE6ec2174539a849f9f3ec973C66b333eD08C0c18"
+      abi: RewardDistributor
+      startBlock: 70483310
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: RewardDistributor
+          file: ./abis/RewardDistributor.json
       eventHandlers:
         - event: OwnerRecieved(indexed address,indexed address,uint256)
           handler: handleOwnerRecieved
         - event: RecipientRecieved(indexed address,uint256)
           handler: handleRecipientRecieved
-      file: ./src/fees-receiver.ts
+      file: ./src/reward-distributor.ts
   - kind: ethereum/contract
     name: RewardDistributorL1Surplus
     network: arbitrum-one
     source:
       address: "0x2E041280627800801E90E9Ac83532fadb6cAd99A"
-      abi: FeesReceiver
-      startBlock: 70483417
+      abi: RewardDistributor
+      startBlock: 70483310
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -57,21 +79,21 @@ dataSources:
       entities:
         - Fees
       abis:
-        - name: FeesReceiver
-          file: ./abis/FeesReceiver.json
+        - name: RewardDistributor
+          file: ./abis/RewardDistributor.json
       eventHandlers:
         - event: OwnerRecieved(indexed address,indexed address,uint256)
           handler: handleOwnerRecieved
         - event: RecipientRecieved(indexed address,uint256)
           handler: handleRecipientRecieved
-      file: ./src/fees-receiver.ts
+      file: ./src/reward-distributor.ts
   - kind: ethereum/contract
     name: RewardDistributorL2Base
     network: arbitrum-one
     source:
       address: "0xbF5041Fc07E1c866D15c749156657B8eEd0fb649"
-      abi: FeesReceiver
-      startBlock: 70483417
+      abi: RewardDistributor
+      startBlock: 70483310
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -79,21 +101,21 @@ dataSources:
       entities:
         - Fees
       abis:
-        - name: FeesReceiver
-          file: ./abis/FeesReceiver.json
+        - name: RewardDistributor
+          file: ./abis/RewardDistributor.json
       eventHandlers:
         - event: OwnerRecieved(indexed address,indexed address,uint256)
           handler: handleOwnerRecieved
         - event: RecipientRecieved(indexed address,uint256)
           handler: handleRecipientRecieved
-      file: ./src/fees-receiver.ts
+      file: ./src/reward-distributor.ts
   - kind: ethereum/contract
     name: RewardDistributorL2Surplus
     network: arbitrum-one
     source:
       address: "0x32e7AF5A8151934F3787d0cD59EB6EDd0a736b1d"
-      abi: FeesReceiver
-      startBlock: 70483417
+      abi: RewardDistributor
+      startBlock: 70483310
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -101,11 +123,14 @@ dataSources:
       entities:
         - Fees
       abis:
-        - name: FeesReceiver
-          file: ./abis/FeesReceiver.json
+        - name: RewardDistributor
+          file: ./abis/RewardDistributor.json
       eventHandlers:
         - event: OwnerRecieved(indexed address,indexed address,uint256)
           handler: handleOwnerRecieved
         - event: RecipientRecieved(indexed address,uint256)
           handler: handleRecipientRecieved
-      file: ./src/fees-receiver.ts
+      file: ./src/reward-distributor.ts
+graft:
+  base: QmRjWQu6dFX5xN5Z159aNdqUt25D3cooAoNTpJs8gbFy6R
+  block: 72190000

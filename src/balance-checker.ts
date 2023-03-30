@@ -31,7 +31,7 @@ export function handleBlock(block: ethereum.Block): void {
   if (!entity) {
     entity = new Fee(dayID.toString())
     entity.totalFeesETH = ZERO
-    entity.totalWithdrawalsETH = ZERO
+    entity.totalWithdrawnETH = ZERO
   }
 
   if (entity.totalFeesETH.equals(ZERO)) {

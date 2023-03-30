@@ -5,7 +5,7 @@
     "gen:manifest": "node subgraph.yaml.js",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ tucksondev/arbitrum-fees-collected",
+    "deploy": "graph deploy --product hosted-service tucksondev/arbitrum-fees-collected",
     "create-local": "graph create --node http://localhost:8020/ tucksondev/arbitrum-fees-collected",
     "remove-local": "graph remove --node http://localhost:8020/ tucksondev/arbitrum-fees-collected",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 tucksondev/arbitrum-fees-collected",
