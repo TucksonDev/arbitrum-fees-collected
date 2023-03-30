@@ -1,0 +1,111 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Fees
+    network: arbitrum-one
+    source:
+      address: "0x0000000000000000000000000000000000000001"
+      abi: BalanceChecker
+      startBlock: 70483417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: BalanceChecker
+          file: ./abis/BalanceChecker.json
+      blockHandlers:
+        - handler: handleBlock
+      file: ./src/balance-checker.ts
+  - kind: ethereum/contract
+    name: RewardDistributor
+    network: arbitrum-one
+    source:
+      address: "0xE6ec2174539a849f9f3ec973C66b333eD08C0c18"
+      abi: FeesReceiver
+      startBlock: 70483417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: FeesReceiver
+          file: ./abis/FeesReceiver.json
+      eventHandlers:
+        - event: OwnerRecieved(indexed address,indexed address,uint256)
+          handler: handleOwnerRecieved
+        - event: RecipientRecieved(indexed address,uint256)
+          handler: handleRecipientRecieved
+      file: ./src/fees-receiver.ts
+  - kind: ethereum/contract
+    name: RewardDistributorL1Surplus
+    network: arbitrum-one
+    source:
+      address: "0x2E041280627800801E90E9Ac83532fadb6cAd99A"
+      abi: FeesReceiver
+      startBlock: 70483417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: FeesReceiver
+          file: ./abis/FeesReceiver.json
+      eventHandlers:
+        - event: OwnerRecieved(indexed address,indexed address,uint256)
+          handler: handleOwnerRecieved
+        - event: RecipientRecieved(indexed address,uint256)
+          handler: handleRecipientRecieved
+      file: ./src/fees-receiver.ts
+  - kind: ethereum/contract
+    name: RewardDistributorL2Base
+    network: arbitrum-one
+    source:
+      address: "0xbF5041Fc07E1c866D15c749156657B8eEd0fb649"
+      abi: FeesReceiver
+      startBlock: 70483417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: FeesReceiver
+          file: ./abis/FeesReceiver.json
+      eventHandlers:
+        - event: OwnerRecieved(indexed address,indexed address,uint256)
+          handler: handleOwnerRecieved
+        - event: RecipientRecieved(indexed address,uint256)
+          handler: handleRecipientRecieved
+      file: ./src/fees-receiver.ts
+  - kind: ethereum/contract
+    name: RewardDistributorL2Surplus
+    network: arbitrum-one
+    source:
+      address: "0x32e7AF5A8151934F3787d0cD59EB6EDd0a736b1d"
+      abi: FeesReceiver
+      startBlock: 70483417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Fees
+      abis:
+        - name: FeesReceiver
+          file: ./abis/FeesReceiver.json
+      eventHandlers:
+        - event: OwnerRecieved(indexed address,indexed address,uint256)
+          handler: handleOwnerRecieved
+        - event: RecipientRecieved(indexed address,uint256)
+          handler: handleRecipientRecieved
+      file: ./src/fees-receiver.ts

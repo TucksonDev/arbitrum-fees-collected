@@ -1,0 +1,27 @@
+{
+  "name": "arbitrum-fees-collected",
+  "license": "UNLICENSED",
+  "scripts": {
+    "gen:manifest": "node subgraph.yaml.js",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ tucksondev/arbitrum-fees-collected",
+    "create-local": "graph create --node http://localhost:8020/ tucksondev/arbitrum-fees-collected",
+    "remove-local": "graph remove --node http://localhost:8020/ tucksondev/arbitrum-fees-collected",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 tucksondev/arbitrum-fees-collected",
+    "test": "graph test",
+    "lint": "eslint ./src/*.ts",
+    "format": "prettier './src/*.ts' --write"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.43.0",
+    "@graphprotocol/graph-ts": "0.29.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "matchstick-as": "0.5.0",
+    "prettier": "^2.8.7"
+  }
+}
